@@ -1,0 +1,70 @@
+# @package _global_
+
+# Random seed for reproducibility
+seed: 42
+
+# Device configuration
+device: auto  # auto, cuda, mps, cpu
+
+# Data configuration
+data:
+  sample_rate: 16000
+  n_fft: 1024
+  hop_length: 256
+  win_length: 1024
+  n_mels: 80
+  preemphasis: 0.97
+  
+# Model configuration
+model:
+  name: "conv_tasnet"  # unet1d, conv_tasnet, simple_interpolation
+  unet1d:
+    in_channels: 1
+    out_channels: 1
+    base_channels: 64
+    depth: 4
+    kernel_size: 3
+    stride: 2
+    padding: 1
+  conv_tasnet:
+    in_channels: 1
+    out_channels: 1
+    base_channels: 64
+    kernel_size: 3
+    stride: 2
+    num_repeats: 3
+    num_blocks: 8
+    
+# Training configuration
+training:
+  batch_size: 16
+  learning_rate: 1e-3
+  num_epochs: 100
+  weight_decay: 1e-5
+  gradient_clip_norm: 1.0
+  save_every: 10
+  validate_every: 5
+  
+# Loss configuration
+loss:
+  reconstruction_weight: 1.0
+  perceptual_weight: 0.1
+  adversarial_weight: 0.0
+  
+# Evaluation configuration
+evaluation:
+  metrics: ["pesq", "stoi", "si_sdr", "mse"]
+  
+# Augmentation configuration
+augmentation:
+  noise_prob: 0.3
+  noise_snr_range: [0, 20]
+  missing_prob: 0.2
+  missing_length_range: [0.1, 0.5]  # seconds
+  
+# Logging configuration
+logging:
+  level: INFO
+  log_dir: "logs"
+  use_tensorboard: true
+  use_wandb: false
